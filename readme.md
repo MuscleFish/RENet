@@ -8,7 +8,6 @@ It takes cyber intelligence reports (str) in as input, and can deal text in both
 ./datas/bert    # where bert pre-trained model saved
 ./data/models   # where tensorflow2 performed RENet saved, including both Chinese and English models
 bertDeal.py     # deal text by bert
-groupDataProcess.py # deal documents
 model.py        # RENet model processing 
 ```
 
