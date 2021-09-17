@@ -62,7 +62,7 @@ print(testTextOutputs['tactic'], testTextOutputs['tech'])
 ```
 
 Suppose Output:
-```json
+```
 ['TA0002', 'TA0003', 'TA0004', 'TA0005', 'TA0006', 'TA0007', 'TA0009', 'TA0011']['T1036', 'T1053', 'T1070', 'T1102', 'T1119', 'T1497']
 ```
 
