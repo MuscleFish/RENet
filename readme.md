@@ -35,7 +35,7 @@ $$
 
 Fig 2. relevance enhancement
 
-#Dir
+# Dir
 ```
 ./datas         # where data files saved
 ./datas/bert    # where bert pre-trained model saved
