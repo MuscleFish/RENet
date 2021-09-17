@@ -1,4 +1,3 @@
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 # RENet
 RENet is a classification model to classify [Mitre ATT&CK V8](https://attack.mitre.org/versions/v8/) techniques and tactics together.
 It takes cyber intelligence reports (str) in as input, and can deal text in both Chinese and English.
