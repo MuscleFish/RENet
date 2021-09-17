@@ -1,17 +1,54 @@
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 # RENet
-RENet is a classification model to classify ATT&CK V8 techniques and tactics together.
+RENet is a classification model to classify [Mitre ATT&CK V8](https://attack.mitre.org/versions/v8/) techniques and tactics together.
 It takes cyber intelligence reports (str) in as input, and can deal text in both Chinese and English.
 
+![model](imgs/model.png)
+
+Fig 1. model structure
+
+Our pre-trained model uses Bert as the pre-trained word embedding model as the input. 
+And take ATT&CK V8 tactics and techniques list as outputs. User can use `model.py` as the test.
+And trained with `RENet.py` as their own models.
+
+RENet has a special module name relevance enhancement. 
+It takes one of the classifier output as the input to enhance another classified results, 
+by using their relationship.
+For example, In our trained model, the relevance enhancement model enhance the techniques classification results,
+by using tactics results and their belonging relevance. 
+The process can be described as the following formula and Fig.2. 
+
+Common
+
+$$
+P_{to}^{(trans)}=\frac{\sum P_{from}\cdot P(to|from)}{\sum P_{from}}\\
+P_{to}^{(enhance)}=min(P_{to},P_{to}^{(trans)})
+$$
+
+ATT&CK
+
+$$
+P_{tech}^{(refer)}=\frac{\sum P_{tact}\cdot P(tech|tact)}{\sum P_{tact}}\\
+P_{tech}^{(2)}=min(P_{tech},P_{tech}^{(refer)})
+$$
+
+![RE](imgs/mintrans-layers.png)
+
+Fig 2. relevance enhancement
+
 #Dir
-```python
+```
 ./datas         # where data files saved
 ./datas/bert    # where bert pre-trained model saved
 ./data/models   # where tensorflow2 performed RENet saved, including both Chinese and English models
+./data/attck_tactic_tech_relation.json # where kept att&ck v8 tactic-technique relationship download from mitre
 bertDeal.py     # deal text by bert
-model.py        # RENet model processing 
+groupDataProcess.py # deal documents
+model.py        # RENet processing and applications
+RENet.py        # RENet model and configurations 
 ```
 
-# How to Use
+# How to use pre-trained RENet
 You can follow the test in `model.py` to classify your reports.
 ```python
 from model import tactecModel
@@ -26,7 +63,37 @@ print(testTextOutputs['tactic'], testTextOutputs['tech'])
 ```
 
 Suppose Output:
-```apex
-['TA0002', 'TA0003', 'TA0004', 'TA0005', 'TA0006', 'TA0007', 'TA0009', 'TA0011'] ['T1036', 'T1053', 'T1070', 'T1102', 'T1119', 'T1497']
+```json
+['TA0002', 'TA0003', 'TA0004', 'TA0005', 'TA0006', 'TA0007', 'TA0009', 'TA0011']['T1036', 'T1053', 'T1070', 'T1102', 'T1119', 'T1497']
 ```
 
+# How to build your own RENet
+You can simply build your own RENet by using `RENet.py`.
+```python
+from RENet import RENet
+
+model = RENet(input_shape,          # the embedding shape like [max_len, emd_vectors]
+              output_shapes,        # the output_layers vector shapes like Array<int>
+              activation='sigmoid', # classifier activation
+              withRCNN=False,       # classifier RNN deal type, when =False the context vectors are 
+                                    # [forward-vector;backward-vector]; when =True, it can be 
+                                    # [forward-vector; original-vector;backward-vector] 
+              dense_units=[512, 256, 128], # the dense layers dims before the last layer of classifier
+              lstm_dim=256,         # the RNN count
+              dropout=0.5,          # dropout on dense layers
+              cnn_dim=[1, 2],       # cnn layers kernel_sizes 
+              cnn_count=256,        # cnn layers filters
+              output_names=None,    # output layers names
+              renet_pairs=None,     # relevance enhancement type: 
+                                    # when pairs = None: the default pairs are (0->1),(1->2),(2->3),...
+                                    # else when pairs = List<Dict> 
+                                    # user can modify own pair (from->to) as: {from, to, type, weights}
+                                    # from: the index of relevance enhancement from which output node
+                                    # to: the index of relevance enhancement to which output node
+                                    # type: in ['0','zero']: zero init weights; 
+                                    # type: in ['a','artificial']: man-made init weights;
+                                    # type: in ['la','lock-artificial']: man-made init weights and cannot train;
+                                    # weights: given man-made weights, whose shape is [from output vector, to output vector]
+                                    # weights: if not give or given wrong the type will be changed as '0'
+              )
+```
