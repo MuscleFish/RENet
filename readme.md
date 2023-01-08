@@ -2,6 +2,26 @@
 RENet is a classification model to classify [Mitre ATT&CK V8](https://attack.mitre.org/versions/v8/) techniques and tactics together.
 It takes cyber intelligence reports (str) in as input, and can deal text in both Chinese and English.
 
+If it is possible, please cite the following paper:
+
+In Chinese:
+```
+[1]葛文翰,王俊峰,唐宾徽,于忠坤,陈柏翰,余坚.基于关联增强的网络威胁情报技战术分类[J].四川大学学报:自然科学版,2022,59(2):94-102
+```
+
+In English (bibtex):
+```
+@article{
+  title={RENet:tactics and techniques classifications for cyber threat intelligence with relevance enhancement},
+  author={GE, Wen-Han and WANG, Jun-Feng and TANG, Bin-Hui and YU, Zhong-Kun and CHEN, Bo-Han and YU, Jian},
+  journal={Journal of Sichuan University(Natural Science Edition)},
+  year={2022},
+  volume={2},
+  papes={94--102},
+  doi={10.19907/j.0490-6756.2022.023004}
+}
+```
+
 ![model](imgs/model.png)
 
 Fig 1. model structure
@@ -45,6 +65,12 @@ bertDeal.py     # deal text by bert
 groupDataProcess.py # deal documents
 model.py        # RENet processing and applications
 RENet.py        # RENet model and configurations 
+```
+
+# Environmental dependency
+```
+python=3.5+
+tensorflow-gpu=2.2.3
 ```
 
 # How to use pre-trained RENet
