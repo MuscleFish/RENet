@@ -59,8 +59,9 @@ Fig 2. relevance enhancement
 ```
 ./datas         # where data files saved
 ./datas/bert    # where bert pre-trained model saved
-./data/models   # where tensorflow2 performed RENet saved, including both Chinese and English models
-./data/attck_tactic_tech_relation.json # where kept att&ck v8 tactic-technique relationship download from mitre
+./datas/models  # where tensorflow2 performed RENet saved, including both Chinese and English models
+./datas/origin_data                     # where both Chinese and English datasets formed in .csv is kept
+./datas/attck_tactic_tech_relation.json # where kept att&ck v8 tactic-technique relationship download from mitre
 bertDeal.py     # deal text by bert
 groupDataProcess.py # deal documents
 model.py        # RENet processing and applications
