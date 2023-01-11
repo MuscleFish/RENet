@@ -24,12 +24,12 @@ class tactecModel(object):
             self.model = models.load_model('./datas/models/chinese_unlock_belonginit_model_20210409',
                                            custom_objects={'focal_loss_fixed': focal_loss()})
             self.bertEncoder = bertDeal('./datas/bert/chinese_L-12_H-768_A-12')
-            self.origin_data_path = './datas/origin_datas/rmSm_chinese_dataorigin10.csv'
+            self.origin_data_path = './datas/original_data/rmSm_chinese_dataorigin10.csv'
         else:
             self.model = models.load_model('./datas/models/english_unlock_belonginit_model_20210410',
                                            custom_objects={'focal_loss_fixed': focal_loss()})
             self.bertEncoder = bertDeal('./datas/bert/cased_L-12_H-768_A-12')
-            self.origin_data_path = './datas/origin_datas/combin_data_origin13.csv'
+            self.origin_data_path = './datas/original_data/combin_data_origin13.csv'
         self.origin_data = pd.read_csv(self.origin_data_path)
         self.tact_ids = [k for k in self.origin_data.keys() if re.match(r'^TA\d+$', k)]
         self.tech_ids = [k for k in self.origin_data.keys() if re.match(r'^T\d+$', k)]
